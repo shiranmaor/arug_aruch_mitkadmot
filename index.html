@@ -349,9 +349,25 @@
           <input id="phone" name="phone" type="tel" placeholder="05X-XXXXXXX" required="">
         </div>
         <div class="full">
-          <label for="email">אימייל (לא חובה)</label>
-          <input id="email" name="email" type="email" placeholder="example@mail.com">
+          <label for="email">אימייל</label>
+          <input id="email" name="email" type="email" placeholder="example@mail.com" required="">
         </div>
+
+        <div>
+        <label for="region">אזור מגורים</label>
+        <input id="region" name="region" type="text" required="">
+      </div>
+
+      <div>
+        <label for="baby_age">גיל התינוק/ת</label>
+        <input id="baby_age" name="baby_age" type="text" required="">
+      </div>
+
+      <div class="full">
+        <label for="carriers">מה הניסיון שלך בארוך ארוך?</label>
+        <input id="carriers" name="carriers" type="text" required="">
+      </div>
+
 
         <input type="hidden" name="source" id="source">
 
@@ -822,6 +838,9 @@
       const name    = (fd.get("name")    || "").toString();
       const phone   = (fd.get("phone")   || "").toString();
       const email   = (fd.get("email")   || "").toString();
+      const region   = (fd.get("region")   || "").toString();
+      const baby_age = (fd.get("baby_age") || "").toString();
+      const experience = (fd.get("experience") || "").toString();
       const message = (fd.get("message") || "").toString();
 
       try {
@@ -835,7 +854,7 @@
 
           showWaitinglistPopup(); // מידית
 
-          const payload = JSON.stringify({ type:"waitinglist", page_id: PAGE_ID, name, phone, email, message });
+          const payload = JSON.stringify({ type:"waitinglist", page_id: PAGE_ID, name, phone, email, message, region, baby_age, experience });
           if (navigator.sendBeacon) {
             const blob = new Blob([payload], { type: "text/plain;charset=utf-8" });
             navigator.sendBeacon(API_URL, blob);
@@ -854,7 +873,7 @@
 
           showWaitinglistPopup();
 
-          const payload = JSON.stringify({ type:"waitinglist", page_id: PAGE_ID, name, phone, email, message });
+          const payload = JSON.stringify({ type:"waitinglist", page_id: PAGE_ID, name, phone, email, message, region, baby_age, experience });
           if (navigator.sendBeacon) {
             const blob = new Blob([payload], { type: "text/plain;charset=utf-8" });
             navigator.sendBeacon(API_URL, blob);
@@ -901,7 +920,7 @@
             method: "POST",
             mode: "no-cors",
             headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify({ type:"waitinglist", page_id: PAGE_ID, name, phone, email, message })
+            body: JSON.stringify({ type:"waitinglist", page_id: PAGE_ID, name, phone, email, message, region, baby_age, experience })
           });
           return;
         }
@@ -911,7 +930,7 @@
           method: "POST",
           mode: "no-cors",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ type:"registration", page_id: PAGE_ID, name, phone, email, message })
+          body: JSON.stringify({ type:"registration", page_id: PAGE_ID, name, phone, email, message, region, baby_age, experience })
         });
 
         showThanks();
