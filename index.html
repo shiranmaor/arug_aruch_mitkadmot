@@ -1032,7 +1032,7 @@ window.saveToGitHub = async function saveToGitHub(){
 
   try {
     // 1) SHA לקובץ הקיים
-    const path = "index_mitkadmot.html";
+    const path = "index.html";
     const url  = `https://api.github.com/repos/${repo}/contents/${path}`;
     const res  = await fetch(url + `?ref=${branch}`, {
       headers: { Authorization: "token " + token }
