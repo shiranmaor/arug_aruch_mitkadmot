@@ -244,7 +244,7 @@
   <!-- Hero -->
   <header class="hero">
     <div class="container">
-      <h1>סדנת ארוג ארוך למתקדמות</h1>
+      <h1 id="mainTitle">סדנת ארוג ארוך למתקדמות</h1>
       <p>נשיאה על הגב בארוג ארוך ושיפור הטכניקה</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="#register">להרשמה ושמירת מקום</a>
@@ -262,9 +262,8 @@
       <div class="next-box">
         <div class="kv">
           <span class="k">מועד</span>
-          <span class="v">
-            <span id="workshop-date-inline"><strong>חמישי, 30 באוקטובר</strong></span> • 10:00–12:30
-          </span>
+          <span class="v" id="workshop-slot"><strong id="workshop-date-inline">חמישי, 30 באוקטובר</strong></span> • 10:00–12:30
+
         </div>
         <div class="kv">
           <span class="k">מיקום</span>
@@ -272,7 +271,7 @@
         </div>
         <div class="kv">
           <span class="k">עלות</span>
-          <span class="v">280 ₪</span>
+          <span id="workshop-price">280 ₪</span>
         </div>
         <div class="next-cta">
           <a class="btn btn-primary" href="#register" aria-label="הירשם לסדנה הקרובה">להרשמה</a>
@@ -299,9 +298,18 @@
         <h3 style="margin-top:0;color:var(--tz-700)">פרטי הסדנה</h3>
         <ul class="checks">
           <li><strong>מנחה:</strong> שירן מאור, מדריכת נשיאה ומדריכה להתפתחות תינוקות</li>
-          <li><strong>אורך:</strong> כשעתיים וחצי</li>
-          <li><strong>קבוצה קטנה:</strong> עד 4 משתתפות</li>
-          <li><strong>מיקום/תאריך:</strong> <span id="workshop-date-value">30 באוקטובר, מודיעין</span></li>
+          <li>
+            <strong>אורך:</strong>
+            <span id="workshop-duration">כשעתיים וחצי</span>
+          </li>
+          <li>
+            <strong>קבוצה קטנה:</strong>
+            <span id="workshop-group-size">עד 4 משתתפות</span>
+          </li>
+          <li>
+            <strong>מיקום/תאריך:</strong>
+            <span id="workshop-date-value" class="">22 אוקטובר, מודיעין</span>
+          </li>
         </ul>
         <div class="hr"></div>
         <div style="font-weight:800;color:var(--tz-800)">ההרשמה מתבצעת בטופס – התשלום ייפתח לאחר מכן בפייבוקס.</div>
@@ -931,6 +939,195 @@
     });
   })();
   </script>
+
+
+<script>
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("edit") !== "1") return;
+
+  // 1) הפיכת שדות לעריכים (כמו בבסיס)
+  const titleEl = document.querySelector(".hero h1");
+  if (titleEl) {
+    titleEl.contentEditable = "true";
+    titleEl.style.outline = "2px dashed #888";
+    titleEl.style.outlineOffset = "4px";
+  }
+
+  [
+    "workshop-slot",        // מועד ושעות (אם קיים)
+    "workshop-price",       // עלות (אם קיים)
+    "workshop-duration",    // אורך הסדנה (אם קיים)
+    "workshop-group-size",  // קבוצה: עד X (אם קיים)
+    "workshop-date-value"   // המיקום/תאריך (“30 באוקטובר, מודיעין”) — קיים אצלך
+  ].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.contentEditable = "true";
+      el.style.outline = "2px dashed #888";
+      el.style.outlineOffset = "4px";
+    }
+  });
+
+  // 2) יצירת פאנל ניהול קטן
+  const panel = document.createElement("div");
+  panel.id = "__adminPanel";
+  panel.style.position = "fixed";
+  panel.style.bottom = "20px";
+  panel.style.left = "20px";
+  panel.style.zIndex = "9999";
+  panel.style.background = "#fff";
+  panel.style.padding = "10px 14px";
+  panel.style.border = "1px solid #ccc";
+  panel.style.borderRadius = "10px";
+  panel.style.boxShadow = "0 4px 10px rgba(0,0,0,0.1)";
+  panel.innerHTML = `
+    <label style="display:block;margin-bottom:6px">
+      GitHub Token:
+      <input id="ghToken" type="password" placeholder="ghp_..." style="width:260px">
+    </label>
+    <label style="display:block;margin-bottom:6px">
+      Repo (username/repo):
+      <input id="ghRepo" type="text" placeholder="user/site" style="width:260px">
+    </label>
+    <label style="display:block;margin-bottom:6px">
+      Branch:
+      <input id="ghBranch" type="text" value="main" style="width:260px">
+    </label>
+    <label style="display:block;margin:8px 0">
+      <input id="isClosed" type="checkbox"> סגור הרשמה (יעדכן את FORCE_CLOSE בקובץ לפני שמירה)
+    </label>
+    <button id="saveBtn" class="btn btn-primary" type="button" style="width:100%">שמירת שינויים ל-GitHub</button>
+    <div id="saveStatus" style="margin-top:8px;color:#333;font-size:13px"></div>
+  `;
+  document.body.appendChild(panel);
+
+  // חיבור הכפתור לפונקציה שתתווסף בשלב הבא
+  const saveBtn = document.getElementById("saveBtn");
+if (saveBtn) {
+  // שימו לב: הקריאה ל-window.saveToGitHub מתבצעת בזמן הלחיצה,
+  // כך שגם אם הפונקציה מוגדרת רק אחר־כך — זה יעבוד.
+  saveBtn.addEventListener("click", () => window.saveToGitHub && window.saveToGitHub());
+}
+
+})();
+</script>
+
+
+
+<script>
+window.saveToGitHub = async function saveToGitHub(){
+  const token   = (document.getElementById("ghToken")  || {}).value || "";
+  const repo    = (document.getElementById("ghRepo")   || {}).value || "";
+  const branch  = (document.getElementById("ghBranch") || {}).value || "main";
+  const isClosed = !!(document.getElementById("isClosed") && document.getElementById("isClosed").checked);
+  const status = document.getElementById("saveStatus");
+
+  if (!token || !repo) {
+    alert("חייבים למלא Token ו-repo (username/repo)");
+    return;
+  }
+
+  status.textContent = "📤 שולח שינויים ל-GitHub...";
+
+  try {
+    // 1) SHA לקובץ הקיים
+    const path = "index.html";
+    const url  = `https://api.github.com/repos/${repo}/contents/${path}`;
+    const res  = await fetch(url + `?ref=${branch}`, {
+      headers: { Authorization: "token " + token }
+    });
+    const json = await res.json();
+    if (!json.sha) throw new Error("לא התקבל SHA מהשרת");
+
+    // 2) משכפלים DOM נקי לפני העלאה (לא פוגעים בדום החי)
+    const doc = document.documentElement.cloneNode(true);
+
+    // 2.1) מסירים פאנל ניהול
+    const panelClone = doc.querySelector("#__adminPanel");
+    if (panelClone && panelClone.parentNode) panelClone.parentNode.removeChild(panelClone);
+
+    // 2.2) מסירים contentEditable/מסגרות מהכותרת (אם קיימת עם id) ומיתר השדות
+    const titleClone = doc.querySelector("#mainTitle"); // בבסיס זה קיים; אם לא — פשוט יתעלם
+    if (titleClone) {
+      titleClone.removeAttribute("contenteditable");
+      titleClone.style.outline = "";
+      titleClone.style.outlineOffset = "";
+    }
+    ["workshop-slot","workshop-price","workshop-duration","workshop-group-size","workshop-date-value"].forEach(id=>{
+      const el = doc.querySelector("#"+id);
+      if (el) {
+        el.removeAttribute("contenteditable");
+        el.style.outline = "";
+        el.style.outlineOffset = "";
+      }
+    });
+
+    // 2.3) הסרת “קו חוצה”/ארטיפקטים/ערכי מקור
+    // מסירים class של קו-חוצה
+    doc.querySelectorAll(".line-through").forEach(el => el.classList.remove("line-through"));
+
+    // מסירים value עם '?edit=1' מהשדה הסמוי (אם נשמר בטעות)
+    const srcInput = doc.querySelector("#source");
+    if (srcInput) srcInput.removeAttribute("value");
+
+    // מסירים הזרקות של תוספי דפדפן
+    const extSelectors = [
+      'script[src^="chrome-extension://"]',
+      'link[href^="chrome-extension://"]',
+      'link#dark-mode-custom-link',
+      'link#dark-mode-general-link',
+      'style#dark-mode-custom-style',
+      'style#dark-mode-native-style',
+      'style#dark-mode-native-sheet'
+    ];
+    extSelectors.forEach(sel => doc.querySelectorAll(sel).forEach(n => n.remove()));
+
+    doc.querySelectorAll("*").forEach(el => {
+      ["bis_skin_checked","bis_register"].forEach(a => { if (el.hasAttribute(a)) el.removeAttribute(a); });
+      [...el.attributes].forEach(attr => { if (attr.name.startsWith("__processed_")) el.removeAttribute(attr.name); });
+    });
+
+    // 2.4) עדכון FORCE_CLOSE בעותק לפני שמירה
+    doc.querySelectorAll("script").forEach(scr => {
+      if (scr.textContent.includes("let FORCE_CLOSE")) {
+        scr.textContent = scr.textContent.replace(
+          /let FORCE_CLOSE\s*=\s*(true|false)\s*;/,
+          "let FORCE_CLOSE = " + (isClosed ? "true" : "false") + ";"
+        );
+      }
+    });
+
+    // 2.5) מרכיבים HTML מלא כולל DOCTYPE ומקודדים ל-base64
+    const html = "<!DOCTYPE html>\n" + doc.outerHTML;
+    const base64 = btoa(unescape(encodeURIComponent(html)));
+
+    // 3) העלאת Commit חדש
+    const body = {
+      message: "עדכון תוכן דף (עריכה דרך האתר)",
+      content: base64,
+      branch,
+      sha: json.sha
+    };
+    const putRes = await fetch(url, {
+      method: "PUT",
+      headers: { Authorization: "token " + token, "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+    const putJson = await putRes.json();
+
+    if (putJson.commit) {
+      status.textContent = "✅ נשמר בהצלחה! commit " + putJson.commit.sha.substring(0,7);
+    } else {
+      throw putJson;
+    }
+  } catch (err) {
+    console.error(err);
+    status.textContent = "❌ שגיאה: " + (err.message || JSON.stringify(err));
+  }
+};
+</script>
+
 
 </body>
 </html>
