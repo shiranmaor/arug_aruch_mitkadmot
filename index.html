@@ -575,62 +575,63 @@
 
 
   // === מזהה ייחודי לדף לפי התאריך המוצג בעמוד (כמו בבסיס) ===
-  (function () {
-    const baseId = "arug_aroch_mitkadmot";
-    const el = document.getElementById("workshop-date-value"); // למשל: "30 באוקטובר, מודיעין"
-    let PAGE_ID = baseId;
+    (function () {
+      const baseId = "arug_aroch_mitkadmot";
+      const el = WORKSHOP_DATE_TEXT; // נקרא ישירות מהמחרוזת של התאריך
+      let PAGE_ID = baseId;
 
-    if (el) {
-      const raw = (el.textContent || "").trim();
-      const stripNikud = s => s.replace(/[\u0591-\u05C7]/g, "");
-      const normalizeHeb = s => stripNikud(s).replace(/[^\u0590-\u05FF0-9\s,.\-–—/]/g, "");
-      const normToken = s => normalizeHeb(s).replace(/^[בלמהו]?/, "").trim();
-      const months = {
-        "ינואר":1,"פברואר":2,"מרץ":3,"מרס":3,"אפריל":4,"מאי":5,"יוני":6,"יולי":7,"אוגוסט":8,
-        "ספטמבר":9,"אוקטובר":10,"נובמבר":11,"דצמבר":12
-      };
-      let day=null, monthNum=null;
+      if (el) {
+        const raw = (el || "").trim(); // במקום el.textContent
+        const stripNikud = s => s.replace(/[\u0591-\u05C7]/g, "");
+        const normalizeHeb = s => stripNikud(s).replace(/[^\u0590-\u05FF0-9\s,.\-–—/]/g, "");
+        const normToken = s => normalizeHeb(s).replace(/^[בלמהו]?/, "").trim();
+        const months = {
+          "ינואר":1,"פברואר":2,"מרץ":3,"מרס":3,"אפריל":4,"מאי":5,"יוני":6,"יולי":7,"אוגוסט":8,
+          "ספטמבר":9,"אוקטובר":10,"נובמבר":11,"דצמבר":12
+        };
+        let day=null, monthNum=null;
 
-      const tokens = raw.split(/[\s,.\-–—/]+/);
-      for (let i = 0; i < tokens.length; i++) {
-        const tok = tokens[i];
-        if (day == null) {
-          const m = tok.match(/^\d{1,2}$/);
-          if (m) {
-            const n = parseInt(m[0], 10);
-            if (n >= 1 && n <= 31) day = n;
+        const tokens = raw.split(/[\s,.\-–—/]+/);
+        for (let i = 0; i < tokens.length; i++) {
+          const tok = tokens[i];
+          if (day == null) {
+            const m = tok.match(/^\d{1,2}$/);
+            if (m) {
+              const n = parseInt(m[0], 10);
+              if (n >= 1 && n <= 31) day = n;
+            }
+          }
+          if (monthNum == null) {
+            const t = normToken(tok);
+            if (months[t]) monthNum = months[t];
+          }
+          if (day != null && monthNum != null) break;
+        }
+
+        let year = null;
+        const year4 = raw.match(/\b20\d{2}\b/);
+        if (year4) {
+          year = parseInt(year4[0], 10);
+        } else {
+          const now = new Date();
+          year = now.getFullYear();
+          if (monthNum != null) {
+            const currentMonth = now.getMonth() + 1;
+            if (monthNum < currentMonth) year += 1;
           }
         }
-        if (monthNum == null) {
-          const t = normToken(tok);
-          if (months[t]) monthNum = months[t];
-        }
-        if (day != null && monthNum != null) break;
-      }
 
-      let year = null;
-      const year4 = raw.match(/\b20\d{2}\b/);
-      if (year4) {
-        year = parseInt(year4[0], 10);
-      } else {
-        const now = new Date();
-        year = now.getFullYear();
-        if (monthNum != null) {
-          const currentMonth = now.getMonth() + 1;
-          if (monthNum < currentMonth) year += 1;
+        if (day != null && monthNum != null && year != null) {
+          const dd = String(day).padStart(2, "0");
+          const mm = String(monthNum).padStart(2, "0");
+          const yy = String(year).slice(-2);
+          PAGE_ID = `${baseId}_${dd}_${mm}_${yy}`;
         }
       }
 
-      if (day != null && monthNum != null && year != null) {
-        const dd = String(day).padStart(2, "0");
-        const mm = String(monthNum).padStart(2, "0");
-        const yy = String(year).slice(-2);
-        PAGE_ID = `${baseId}_${dd}_${mm}_${yy}`;
-      }
-    }
+      window.PAGE_ID = PAGE_ID;
+    })();
 
-    window.PAGE_ID = PAGE_ID;
-  })();
 
   // --- פרסור תאריך ובדיקה אם עבר (לא כולל היום) ---
   function parseWorkshopDateFromText(text) {
