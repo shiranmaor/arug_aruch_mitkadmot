@@ -261,7 +261,7 @@
       <div class="next-box">
         <div class="kv">
           <span class="k">מועד</span>
-          <span class="v" id="workshop-slot" style=""><strong id="workshop-date-inline" class="">חמישי, 30 באוקטובר</strong></span> • 10:00–12:30
+          <span class="v" id="workshop-slot" style=""><strong id="workshop-date-inline" class=""></strong></span> • 10:00–12:30
 
         </div>
         <div class="kv">
@@ -364,8 +364,8 @@
       </div>
 
       <div class="full">
-        <label for="carriers">מה הניסיון שלך בארוך ארוך?</label>
-        <input id="carriers" name="carriers" type="text" required="">
+        <label for="experience">מה הניסיון שלך בארוך ארוך?</label>
+        <input id="experience" name="experience" type="text" required="">
       </div>
 
 
@@ -373,7 +373,7 @@
 
         <div class="full">
           <label for="message">הודעה</label>
-          <textarea id="message" name="message" placeholder="גיל התינוק/ת, האם יש מנשא, שאלות…"></textarea>
+          <textarea id="message" name="message" placeholder="דברים שחשוב לך שאדע..."></textarea>
         </div>
         <div class="full" style="display:flex;gap:10px;flex-wrap:wrap">
           <button type="submit" class="btn btn-primary">שלחי והרשמי</button>
@@ -388,11 +388,12 @@
     <!-- Success overlay -->
     <div class="success-mask" id="successMask" aria-hidden="true">
       <div class="success-box" role="alert" aria-live="assertive">
-      <div style="font-weight:800;color:var(--tz-800);font-size:18px;margin-bottom:10px">תאריך הסדנה עבר</div>
-      <p style="margin:0 0 14px;color:var(--ink);line-height:1.5">יכולה להשאיר פרטים ואצור איתך קשר :)</p>
-      <button id="closePopup" class="btn btn-primary" style="margin-top:10px">חזרה לדף</button>
+        <div style="font-weight:800;color:var(--tz-800);font-size:18px;margin-bottom:10px">בודקת זמינות…</div>
+        <p style="margin:0 0 14px;color:var(--ink);line-height:1.5">רגע קטן ואני מעבירה אותך לתשלום…</p>
+        <div class="spinner" aria-hidden="true"></div>
+      </div>
     </div>
-    </div>
+
 
   <!-- Videos -->
   <section id="videos" class="card">
@@ -453,11 +454,16 @@
   </footer>
 
   <script>
-    // סקריפט זיהוי מקור ההגשה
+    // 🗓️ תיאור מועד הסדנה — משתנה אחד לשימוש בכל המקומות
+    const WORKSHOP_DATE_TEXT = "חמישי, 30 בנובמבר 2025";
+
     document.addEventListener("DOMContentLoaded", function() {
-      const sourceField = document.getElementById('source');
-      if (sourceField) sourceField.value = window.location.href;
+      const dateEl1 = document.getElementById("workshop-date-value");
+      const dateEl2 = document.querySelector(".next-box .v strong");
+      if (dateEl1) dateEl1.textContent = WORKSHOP_DATE_TEXT + ", מודיעין";
+      if (dateEl2) dateEl2.textContent = WORKSHOP_DATE_TEXT;
     });
+
   </script>
 
   <script>
@@ -521,7 +527,8 @@
   <script>
   (function () {
     const PHONE = "972548188793"; // מספר בינלאומי ללא +
-    const MSG = "היי שירן, יש לי שאלה קצרה לגבי הסדנה :)";
+    const workshopTitle = document.querySelector('.hero h1')?.textContent.trim() || '';
+    const MSG = `היי שירן, יש לי שאלה קצרה לגבי הסדנה "${workshopTitle}" :)`;
     const url = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(MSG);
 
     ["whatsapp-hero", "whatsapp-footer"].forEach(function (id) {
@@ -548,7 +555,7 @@
 
   <script>
   // === קונפיג API ===
-  const API_URL = "https://script.google.com/macros/s/AKfycby-jKbO4HRMjR6BoGC3tvk6GhVoqMySfRRqtRvloy8no3K5k-khMYYpo5_dbrOzQiUr/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbzQc0VWstGrox3SfVkTYNsXMzGwph-8xsb2SXrkOu3AdZNNCoUB6mrCa0HWoDoTNISq/exec";
 
   // === דגל סגירת הרשמה ידני ===
   // שנה ל-true כדי לסגור ידנית
@@ -656,10 +663,6 @@
     } else {
       const now=new Date();
       year = now.getFullYear();
-      if (monthNum!=null) {
-        const currentMonth = now.getMonth()+1;
-        if (monthNum < currentMonth) year += 1;
-      }
     }
 
     if (day!=null && monthNum!=null && year!=null) {
