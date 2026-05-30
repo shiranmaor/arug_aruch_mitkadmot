@@ -8,8 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&amp;display=swap" rel="stylesheet">
   <style>
     :root {
-      --tz-50:   #fbf7e8;   /* קרם חמים בהיר – רקע כללי */
-      --tz-100:  #f4ebc6;   /* קש בהיר – רקע כרטיסים */
+      --tz-50:   #faf6e8;   /* קרם חמים בהיר – רקע כללי */
+      --tz-100:  #f6edd0;   /* קש בהיר – רקע כרטיסים */
       --tz-200:  #e7d79a;   /* צהוב רך – גבולות */
       --tz-300:  #d8bf67;   /* זהב בהיר */
       --tz-400:  #caa33d;   /* זהוב מודגש */
@@ -52,15 +52,24 @@
     .brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--tz-800)}
     .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--tz-400);box-shadow:0 0 0 6px var(--tz-100) inset}
     .hamburger{
-      display:flex;align-items:center;justify-content:center;
+      position:relative; display:flex;align-items:center;justify-content:center;
       width:44px;height:44px;border-radius:12px;border:1px solid var(--tz-200);
-      background:#fff; cursor:pointer;
+      background:linear-gradient(180deg, #fffdf4, var(--tz-50)); cursor:pointer;
+      box-shadow:0 2px 8px rgba(111, 89, 25, 0.08), inset 0 1px 0 rgba(255,255,255,.7);
+      transition:background .2s ease,border-color .2s ease,box-shadow .2s ease;
     }
-    .hamburger span,.hamburger::before,.hamburger::after{
-      content:""; display:block; width:22px; height:2px; background:var(--tz-800); border-radius:2px
+    .hamburger::before,.hamburger::after{
+      content:""; position:absolute; right:50%; width:20px; height:2.5px; margin-right:-10px;
+      background:var(--tz-800); border-radius:2px; transition:background .2s ease
     }
-    .hamburger::before{transform:translateY(-6px)}
+    .hamburger::before{transform:translateY(-6px); box-shadow:0 6px 0 var(--tz-800)}
     .hamburger::after{transform:translateY(6px)}
+    .hamburger:hover{
+      background:linear-gradient(180deg, #fff8e8, var(--tz-100));
+      border-color:var(--tz-300);
+      box-shadow:0 4px 12px rgba(111, 89, 25, 0.1), inset 0 1px 0 rgba(255,255,255,.7);
+    }
+    .hamburger:active{box-shadow:inset 0 2px 6px rgba(111, 89, 25, 0.12)}
 
     /* Drawer */
     .drawer{position:fixed; inset:0; z-index:60; pointer-events:none}
@@ -83,7 +92,7 @@
 
     /* Hero */
     header.hero{
-      background:linear-gradient(180deg, #fdf9ec, #f4ebc6);
+      background:linear-gradient(180deg, #f8f0c8 0%, #f7f0d8 42%, #f9f4e4 72%, var(--bg) 100%);
       color:var(--ink); text-align:center; padding:56px 16px 30px; position:relative; overflow:hidden;
     }
     .hero h1{margin:0 0 8px; font-size:clamp(28px,4.6vw,46px); font-weight:800; letter-spacing:.2px}

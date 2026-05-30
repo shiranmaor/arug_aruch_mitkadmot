@@ -27,3 +27,20 @@ What was updated:
 Notes:
 - Old purple/lilac hardcoded values were scanned and replaced where relevant in the landing page source.
 - No behavior, layout, spacing, copy, RTL structure, or intended content changes were introduced as part of this task.
+
+## 2026-05-30 Follow-up
+
+Files changed:
+- `index.html`
+- `codex/context.md`
+- `codex/change-log.md`
+- `codex/verification.md`
+
+What was updated:
+- Refined the warm palette transition between the sticky top area, hero, and page background by slightly softening the lightest palette stops and extending the hero gradient down into the shared page background value.
+- Improved the hamburger button styling with a warm pale fill, clearer olive-brown icon lines, subtle border/shadow treatment, and a matching hover/active state.
+- Kept the changes CSS-only in the landing page source.
+
+Notes:
+- This follow-up was intended only to fix the unsmooth hero-to-page visual cut and the weak hamburger presentation from the first yellow conversion.
+- No behavior, layout, spacing, copy, RTL structure, or intended JavaScript changes were introduced.

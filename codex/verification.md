@@ -3,6 +3,9 @@
 Date:
 - 2026-05-30
 
+Follow-up date:
+- 2026-05-30
+
 Checks performed:
 - Scanned `index.html` for legacy purple/lilac palette tokens:
   - `--tz-50` through `--tz-800`
@@ -49,3 +52,24 @@ Results:
 Visual preview:
 - Local browser-rendered preview captured successfully with headless Chrome.
 - Visual inspection indicated the hero-to-body transition remains smooth and the updated warm palette relationships are consistent across the visible sections.
+
+## Follow-up Verification
+
+Checks performed:
+- Reviewed the git diff for the follow-up to confirm the landing page code changes were limited to CSS styling in `index.html`.
+- Confirmed no JavaScript blocks or logic were edited during the follow-up.
+- Confirmed the document root still remains `lang="he" dir="rtl"`.
+- Rendered a fresh local browser preview with headless Chrome to inspect:
+  - topbar
+  - hero
+  - hero-to-next-section transition
+  - hamburger button
+  - first card section
+- Rendered a second local browser preview with the existing drawer opened via the page's current JS to visually confirm the hamburger/drawer presentation still works with unchanged behavior.
+
+Results:
+- Diff scope result: CSS and documentation only.
+- JavaScript behavior result: no intentional changes.
+- Transition result: the hero now fades down into the same body background family instead of ending on a stronger separate block tone.
+- Hamburger result: the button now renders three visible lines, uses a warm pale surface, and remains connected to the unchanged drawer behavior.
+- RTL Hebrew layout result: unchanged.
