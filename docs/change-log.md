@@ -1,5 +1,34 @@
 # Change Log
 
+## 2026-06-17 FAQ repair
+
+Files changed:
+- `index.html`
+- `docs/context.md`
+- `docs/change-log.md`
+- `docs/verification.md`
+
+What was updated:
+- Investigated the missing FAQ section in Git history before editing the page.
+- Identified commit `08521338ecb6bcec77aed652cfa83a6446eb332f` as the last commit containing the historical FAQ block.
+- Identified commit `980685ad632096b506594ee14688ddadadc178e7` as the first commit where that FAQ block disappears from `index.html`.
+- Restored the FAQ content exactly from the historical block in `08521338ecb6bcec77aed652cfa83a6446eb332f`, preserving the original Hebrew wording, item order, and HTML structure as closely as possible.
+- Applied the minimal compatibility adjustment required to make the section live again:
+  - removed the surrounding HTML comment wrapper from the historical block
+  - inserted the restored section before the existing cancellation policy
+- Final near-end page order is now:
+  - `#videos`
+  - `#faq`
+  - `#cancellation-policy`
+  - `#social`
+  - footer
+
+Notes:
+- No commit on `main` contained a visible uncommented FAQ section; the exact FAQ content existed only as a commented block in history.
+- The removal in `980685ad632096b506594ee14688ddadadc178e7` appears accidental or incidental to unrelated work. The commit message and current documentation do not mention any intentional FAQ removal.
+- No JavaScript logic was changed.
+- Workshop date, price, form fields, WhatsApp links, PayBox URL, Formspree URL, Apps Script API URL, registration limit logic, drawer behavior, and edit-mode GitHub save logic were not modified.
+
 ## 2026-06-17 11:50 IDT
 
 Files changed:
@@ -14,7 +43,7 @@ What was updated:
 - Aligned the policy structure and visual treatment as closely as possible with the basic workshop landing page while preserving this page's existing golden palette.
 
 Notes:
-- This advanced landing page still has no visible FAQ section, so the cancellation policy remains between `#videos` and `#social`.
+- This advanced landing page still had no visible FAQ section at that time, so the cancellation policy remained between `#videos` and `#social`.
 - No JavaScript logic was changed.
 - Workshop date, price, form fields, WhatsApp links, PayBox URL, Formspree URL, Apps Script API URL, registration limit logic, drawer behavior, and edit-mode GitHub save logic were not modified.
 
@@ -33,7 +62,7 @@ What was updated:
 - Reused the existing `.card` container and warm golden/yellow palette tokens so the new section matches the current landing page design language.
 
 Notes:
-- The page currently has no visible FAQ section, so the cancellation policy was placed in the intended near-end FAQ slot before the social/footer ending flow.
+- The page currently had no visible FAQ section at that time, so the cancellation policy was placed in the intended near-end FAQ slot before the social/footer ending flow.
 - No JavaScript logic was changed.
 - Workshop date, price, form fields, WhatsApp links, PayBox URL, Formspree URL, Apps Script API URL, registration limit logic, drawer behavior, and edit-mode GitHub save logic were not modified.
 

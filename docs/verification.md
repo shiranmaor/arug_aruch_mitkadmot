@@ -1,5 +1,84 @@
 # Verification
 
+## 2026-06-17 FAQ restoration verification
+
+Checks performed:
+- Confirmed current branch and worktree state before edits:
+  - `git branch --show-current`
+  - `git status --short`
+- Read current project docs and source before editing:
+  - `docs/context.md`
+  - `docs/change-log.md`
+  - `docs/verification.md`
+  - `index.html`
+- Ran the requested Git history investigation commands:
+  - `git log --oneline -- index.html`
+  - `git log -S '<section id="faq"' -- index.html`
+  - `git log -S 'שאלות נפוצות' -- index.html`
+  - `git log -S 'שאלות ותשובות' -- index.html`
+  - `git log -S 'faq-body' -- index.html`
+  - `git log -G 'id="faq"|שאלות נפוצות|שאלות ותשובות|faq-body|<details|</details>' -- index.html`
+- Inspected the relevant commits and content around the FAQ location:
+  - `git show 08521338ecb6bcec77aed652cfa83a6446eb332f:index.html | sed -n '401,421p'`
+  - `git show 980685ad632096b506594ee14688ddadadc178e7:index.html | sed -n '390,420p'`
+  - `git diff 08521338ecb6bcec77aed652cfa83a6446eb332f 980685ad632096b506594ee14688ddadadc178e7 -- index.html`
+- Ran an additional sanity check to see whether any commit on `main` ever contained a visible uncommented FAQ section:
+  - `git log --all -G '^[[:space:]]*<section id="faq"' -- index.html`
+- Ran the required source verification commands after restoring the FAQ:
+  - `git diff`
+  - `git diff --stat`
+  - `grep -n -E 'id="faq"|שאלות נפוצות|שאלות ותשובות|faq-body|<details|</details>' index.html`
+  - `grep -n 'href="#faq"' index.html`
+- Served a temporary preview copy with scripts stripped and `details` opened so the existing registration overlay would not hide the lower sections during visual inspection:
+  - `python3 -m http.server 4195 --bind 127.0.0.1 --directory /tmp/arug-faq-preview`
+- Captured headless Chrome previews for desktop and mobile:
+  - `/tmp/arug-faq-desktop.png`
+  - `/tmp/arug-faq-mobile.png`
+  - `/tmp/arug-faq-mobile-tall.png`
+
+Results:
+- Current branch before repair: `main`.
+- Working tree before repair: clean.
+- Last commit containing the historical FAQ block: `08521338ecb6bcec77aed652cfa83a6446eb332f` (`inital commit`).
+- First commit where the FAQ block disappears from `index.html`: `980685ad632096b506594ee14688ddadadc178e7` (`added: popups when sadna is full or when date is passed`).
+- Additional sanity check result: no commit on `main` contained a visible uncommented FAQ section; the exact FAQ content existed only as a commented HTML block in history.
+- Exact removal diff result:
+  - the `08521338ecb6bcec77aed652cfa83a6446eb332f` -> `980685ad632096b506594ee14688ddadadc178e7` diff removes the entire commented FAQ block that previously appeared after the social section
+  - the removal is not mentioned by the commit message and is unrelated to the stated popup/date logic change
+- Intent assessment:
+  - the FAQ removal appears accidental or incidental rather than explicitly intentional
+  - no current documentation mentions intentionally removing the FAQ
+- Restoration result:
+  - restored the exact historical FAQ content from `08521338ecb6bcec77aed652cfa83a6446eb332f`
+  - preserved the original Hebrew wording and item order
+  - used the original `section`, `details`, `summary`, and `.faq-body` structure
+  - removed only the surrounding HTML comment wrapper so the section renders again
+- Current placement result:
+  - FAQ now appears at `index.html` lines `450-469`
+  - cancellation policy follows at `index.html` lines `471-483`
+  - social follows after cancellation policy
+  - footer remains last
+- Source verification result:
+  - `#faq` now exists in the current `index.html`
+  - the drawer link `href="#faq"` points to an existing section
+  - the source diff is limited to restoring the FAQ section and the accompanying docs updates
+- Layout and language result:
+  - `lang="he"` remains unchanged
+  - `dir="rtl"` remains unchanged
+  - FAQ styling reuses the existing FAQ CSS and matches the current warm palette
+- Behavior result:
+  - no JavaScript logic was intentionally changed
+  - drawer behavior unchanged
+  - PayBox redirect unchanged
+  - Formspree submit unchanged
+  - Apps Script API URL unchanged
+  - registration/full/waiting-list logic unchanged
+  - edit-mode GitHub save logic unchanged
+- Visual preview result:
+  - desktop preview shows the final near-end order as `videos` -> `FAQ` -> `cancellation policy` -> `social`
+  - mobile preview shows the FAQ card stacked correctly and the lower `cancellation policy` -> `social` -> footer flow intact
+  - FAQ expand/collapse appearance works through the native `details`/`summary` behavior using the existing styles
+
 ## 2026-06-17 Styling Alignment Verification
 
 Checks performed:
@@ -28,7 +107,7 @@ Checks performed:
 Results:
 - The page loaded successfully on desktop and mobile.
 - The section order remained `videos` -> `cancellation-policy` -> `social`.
-- No visible FAQ section exists in this landing page, so no FAQ interaction was available to retest.
+- No visible FAQ section existed in this landing page at that time, so no FAQ interaction was available to retest.
 - The new policy items render with transparent backgrounds, `0px` border radius, and only light top separators on later rows.
 - The drawer link to `#cancellation-policy` appears in the hamburger menu, closes the drawer on click, and scrolls the section into view on mobile.
 - The registration form still exists and retains the fields `name`, `phone`, `email`, `region`, `baby_age`, `experience`, `source`, and `message`.
