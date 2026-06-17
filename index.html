@@ -163,6 +163,20 @@
     .faq-body{margin-top:8px;padding-right:14px;border-right:3px solid var(--tz-200);transition:padding .2s, border-color .2s}
     details[open] .faq-body{padding-right:18px;border-right-color:var(--tz-300)}
 
+    /* Cancellation policy */
+    .policy-intro{margin:0 0 16px;color:var(--muted)}
+    .policy-list{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+    .policy-item{
+      background:linear-gradient(180deg, #fffef8 0%, #fbf5e3 100%);
+      border:1px solid var(--tz-200);
+      border-right:4px solid var(--tz-300);
+      border-radius:16px;
+      padding:14px 16px;
+      box-shadow:0 8px 18px rgba(111, 89, 25, 0.06);
+    }
+    .policy-item strong{display:block;margin-bottom:4px;color:var(--tz-800)}
+    .policy-item span{display:block;color:var(--ink)}
+
     /* Footer */
     footer{margin-top:32px;padding:28px 16px;background:var(--tz-800);color:#f8f1d4;text-align:center}
     .footer-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
@@ -424,6 +438,30 @@
       </div>
 
     </div>
+  </section>
+
+  <!-- Cancellation policy -->
+  <section id="cancellation-policy" class="card" aria-labelledby="cancellation-policy-title">
+    <h2 id="cancellation-policy-title">☘️ מדיניות ביטולים</h2>
+    <p class="policy-intro">במידה ומסיבה מסויימת, שהיא בטוח מספיק חשובה, את צריכה לבטל את השתתפותך בסדנה לאחר התשלום, הביטול יבוצע כדלהלן-</p>
+    <ul class="policy-list">
+      <li class="policy-item">
+        <strong>ביטול עד 5 ימים לפני תאריך הסדנה</strong>
+        <span>תקבלי החזר מלא של התשלום 🌈</span>
+      </li>
+      <li class="policy-item">
+        <strong>ביטול בין 5 ל-3 ימים לפני תאריך הסדנה</strong>
+        <span>תקבלי החזר של 75% מהסכום ששולם</span>
+      </li>
+      <li class="policy-item">
+        <strong>ביטול בין 3 ימים ליום אחד לפני הסדנה</strong>
+        <span>תקבלי החזר של 50%</span>
+      </li>
+      <li class="policy-item">
+        <strong>על כל ביטול שיבוצע ביום הסדנה עצמו</strong>
+        <span>לא יהיה החזר 🙏</span>
+      </li>
+    </ul>
   </section>
 
     <!-- Social: Instagram & YouTube -->

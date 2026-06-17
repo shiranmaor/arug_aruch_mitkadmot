@@ -6,6 +6,9 @@ Date:
 Follow-up date:
 - 2026-05-30
 
+Cancellation policy + docs rename date:
+- 2026-06-17
+
 Checks performed:
 - Scanned `index.html` for legacy purple/lilac palette tokens:
   - `--tz-50` through `--tz-800`
@@ -73,3 +76,35 @@ Results:
 - Transition result: the hero now fades down into the same body background family instead of ending on a stronger separate block tone.
 - Hamburger result: the button now renders three visible lines, uses a warm pale surface, and remains connected to the unchanged drawer behavior.
 - RTL Hebrew layout result: unchanged.
+
+## 2026-06-17 Verification
+
+Checks performed:
+- Reviewed `git diff --stat` and the full `git diff` to confirm the change scope is limited to `index.html` and the documentation folder rename/update from `codex` to `docs`.
+- Confirmed the landing page source diff in `index.html` is limited to:
+  - new `.policy-*` CSS rules in lines `166-178`
+  - new `#cancellation-policy` section markup in lines `443-465`
+- Confirmed no JavaScript logic changed for:
+  - drawer menu behavior
+  - PayBox redirect
+  - Formspree submit flow
+  - Apps Script API logic
+  - registration limit logic
+  - edit-mode GitHub save logic
+- Confirmed workshop date, price, form fields, WhatsApp links, PayBox URL, Formspree URL, and Apps Script API URL remain unchanged by source inspection and diff review.
+- Searched the repository for references to the old `codex` folder path after the rename and updated the remaining documentation references to `docs`.
+- Confirmed the page still remains Hebrew and RTL.
+- Rendered local previews with headless Chrome at desktop and mobile widths and visually inspected:
+  - the videos-to-cancellation-policy transition
+  - the new cancellation policy section itself
+  - the cancellation-policy-to-social transition
+  - palette consistency with the existing golden/yellow/olive theme
+  - responsive layout behavior
+
+Results:
+- Diff scope result: limited to `index.html` and the `docs/` rename/update.
+- Old folder-path reference search result: no stale `codex` path matches remain.
+- JavaScript behavior result: unchanged by diff review.
+- Operational form/payment/API/registration flows result: unchanged.
+- Layout/language result: still Hebrew, RTL, and consistent with the existing warm palette.
+- Visual result: the new policy section reads as an official but friendly continuation of the existing section/card design and remains usable on mobile.

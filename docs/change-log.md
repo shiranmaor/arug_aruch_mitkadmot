@@ -1,12 +1,31 @@
 # Change Log
 
+## 2026-06-17
+
+Files changed:
+- `index.html`
+- `docs/context.md`
+- `docs/change-log.md`
+- `docs/verification.md`
+
+What was updated:
+- Renamed the documentation folder from `codex` to `docs`.
+- Added a new cancellation policy section to `index.html` after the intended FAQ area, inserted between `#videos` and `#social`.
+- Added small supporting CSS for the new policy section: `.policy-intro`, `.policy-list`, and `.policy-item`.
+- Reused the existing `.card` container and warm golden/yellow palette tokens so the new section matches the current landing page design language.
+
+Notes:
+- The page currently has no visible FAQ section, so the cancellation policy was placed in the intended near-end FAQ slot before the social/footer ending flow.
+- No JavaScript logic was changed.
+- Workshop date, price, form fields, WhatsApp links, PayBox URL, Formspree URL, Apps Script API URL, registration limit logic, drawer behavior, and edit-mode GitHub save logic were not modified.
+
 ## 2026-05-30
 
 Files changed:
 - `index.html`
-- `codex/context.md`
-- `codex/change-log.md`
-- `codex/verification.md`
+- `docs/context.md`
+- `docs/change-log.md`
+- `docs/verification.md`
 
 What was updated:
 - Replaced the root `--tz-*` palette scale from purple/lilac tones to a warm cream, yellow, golden, mustard, and olive-brown scale.
@@ -32,9 +51,9 @@ Notes:
 
 Files changed:
 - `index.html`
-- `codex/context.md`
-- `codex/change-log.md`
-- `codex/verification.md`
+- `docs/context.md`
+- `docs/change-log.md`
+- `docs/verification.md`
 
 What was updated:
 - Refined the warm palette transition between the sticky top area, hero, and page background by slightly softening the lightest palette stops and extending the hero gradient down into the shared page background value.
