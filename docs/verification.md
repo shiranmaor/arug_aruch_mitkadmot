@@ -1,5 +1,41 @@
 # Verification
 
+## 2026-06-17 Styling Alignment Verification
+
+Checks performed:
+- Ran `git status --short --branch` and `git branch --show-current` before changes and confirmed a clean worktree on `main`.
+- Read `docs/context.md`, `docs/change-log.md`, and `docs/verification.md`, then inspected `index.html` separately from the basic project before editing.
+- Reviewed the existing advanced-page policy block and confirmed it already existed between `#videos` and `#social`, with no visible FAQ section on the page.
+- Replaced the per-rule boxed styling with the same simplified structure used in the basic project:
+  - a `cancellation-policy` card
+  - a `policy-box` with a subtle top divider
+  - one intro paragraph
+  - one plain `ul.policy-list`
+  - light separators between rules instead of separate rounded cards
+- Added a drawer navigation link to `#cancellation-policy`.
+- Confirmed the source diff does not change:
+  - PayBox flow
+  - Formspree submit flow
+  - Apps Script API logic
+  - registration limit logic
+  - date variables
+  - form fields
+  - WhatsApp links
+  - edit-mode GitHub save logic
+- Served the page locally from the repo with `python3 -m http.server 4192 --bind 127.0.0.1`.
+- Ran a headless Chrome preview through Puppeteer Core at `1440x2200` and `390x1800`, and captured screenshots to `/tmp/arug_aruch_mitkadmot_policy_desktop.png` and `/tmp/arug_aruch_mitkadmot_policy_mobile.png`.
+
+Results:
+- The page loaded successfully on desktop and mobile.
+- The section order remained `videos` -> `cancellation-policy` -> `social`.
+- No visible FAQ section exists in this landing page, so no FAQ interaction was available to retest.
+- The new policy items render with transparent backgrounds, `0px` border radius, and only light top separators on later rows.
+- The drawer link to `#cancellation-policy` appears in the hamburger menu, closes the drawer on click, and scrolls the section into view on mobile.
+- The registration form still exists and retains the fields `name`, `phone`, `email`, `region`, `baby_age`, `experience`, `source`, and `message`.
+- No horizontal overflow was detected on desktop or mobile.
+- No JavaScript exceptions were raised during the preview run.
+- Chrome requested `/favicon.ico` and received `404 File not found`; this is unrelated to the policy styling change.
+
 Date:
 - 2026-05-30
 

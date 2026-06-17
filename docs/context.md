@@ -23,14 +23,14 @@ Current landing page structure:
 - footer
 
 Cancellation policy change:
-- A new cancellation policy section was added in `index.html` at lines `443-465`.
-- The section was inserted between `#videos` and `#social`.
-- The current page does not contain a visible FAQ section, so the new policy was placed in the intended near-end FAQ area before the social/footer ending flow.
+- The cancellation policy section remains in `index.html` between `#videos` and `#social`.
+- The current page does not contain a visible FAQ section, so that remains the intended near-end placement before the social/footer ending flow.
+- The policy is now styled as a simple official list inside the section card, aligned as closely as possible with the basic workshop landing page.
 
 Styling approach:
 - Reused the existing `.card` section container so the new block keeps the same spacing, radius, and shadow language as the rest of the page.
-- Added `.policy-intro`, `.policy-list`, and `.policy-item` in `index.html` lines `166-178`.
-- The policy rows use the existing palette tokens (`--tz-200`, `--tz-300`, `--tz-800`, `--ink`) and a light bordered card treatment so the section feels official but still warm.
+- The policy uses a single subtle `.policy-box` divider plus a plain `ul.policy-list` with light separators between rules.
+- The internal styling intentionally avoids separate rounded mini-cards per refund line.
 
 Behavior intentionally left unchanged:
 - drawer open/close behavior and smooth-scroll handling

@@ -1,5 +1,23 @@
 # Change Log
 
+## 2026-06-17 11:50 IDT
+
+Files changed:
+- `index.html`
+- `docs/context.md`
+- `docs/change-log.md`
+- `docs/verification.md`
+
+What was updated:
+- Simplified the cancellation policy styling so the refund rules now render as a clean official list instead of separate bordered cards.
+- Added a hamburger drawer link to `#cancellation-policy` with the label `מדיניות ביטולים`.
+- Aligned the policy structure and visual treatment as closely as possible with the basic workshop landing page while preserving this page's existing golden palette.
+
+Notes:
+- This advanced landing page still has no visible FAQ section, so the cancellation policy remains between `#videos` and `#social`.
+- No JavaScript logic was changed.
+- Workshop date, price, form fields, WhatsApp links, PayBox URL, Formspree URL, Apps Script API URL, registration limit logic, drawer behavior, and edit-mode GitHub save logic were not modified.
+
 ## 2026-06-17
 
 Files changed:
