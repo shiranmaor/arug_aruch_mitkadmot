@@ -1,5 +1,32 @@
 # Verification
 
+## 2026-06-17 Cancellation Policy Text Refinement Verification
+
+Checks performed:
+- Ran `git status --short --branch` and `git branch --show-current` before changes and confirmed a clean worktree on `main`.
+- Read `docs/context.md`, `docs/change-log.md`, and `docs/verification.md`, then inspected the current cancellation policy CSS and markup in `index.html`.
+- Updated the cancellation policy section by:
+  - replacing the intro em dash with a comma
+  - removing the `<strong>` emphasis from each policy rule
+  - increasing the policy list top margin from `16px` to `20px`
+- Confirmed the cancellation policy still remains after FAQ and before social.
+- Served the page locally from the repo with `python3 -m http.server 4194 --bind 127.0.0.1`.
+- Ran a headless Chrome preview through Puppeteer Core at `1440x2200` and `390x1800`, and captured screenshots to `/tmp/arug_aruch_mitkadmot_policy_refine_desktop.png` and `/tmp/arug_aruch_mitkadmot_policy_refine_mobile.png`.
+
+Results:
+- The page loaded successfully on desktop and mobile.
+- The section order remained `videos` -> `faq` -> `cancellation-policy` -> `social`.
+- The intro text now uses the requested comma and contains no em dash.
+- The measured intro-to-list gap is `20px` on desktop and mobile.
+- All policy items render at computed `font-weight: 400`.
+- No policy item contains a `<strong>` child anymore.
+- The hamburger link to `#cancellation-policy` still appears in the drawer, closes the drawer on click, and scrolls the section into view on mobile.
+- The FAQ section still exists and the first FAQ item still opens correctly after interaction.
+- The registration form still exists and retains the fields `name`, `phone`, `email`, `region`, `baby_age`, `experience`, `source`, and `message`.
+- No horizontal overflow was detected on desktop or mobile.
+- No JavaScript exceptions were raised during the preview run.
+- Chrome requested `/favicon.ico` and received `404 File not found`; this is unrelated to the policy text refinement.
+
 ## 2026-06-17 FAQ restoration verification
 
 Checks performed:

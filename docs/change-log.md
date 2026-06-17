@@ -1,5 +1,23 @@
 # Change Log
 
+## 2026-06-17 13:45 IDT
+
+Files changed:
+- `index.html`
+- `docs/change-log.md`
+- `docs/verification.md`
+
+What was updated:
+- Refined the cancellation policy text styling to match the basic workshop landing page more closely.
+- Removed bold emphasis from the policy rule text so each rule now renders in plain weight.
+- Replaced the intro em dash with a comma.
+- Slightly increased the spacing between the intro paragraph and the policy list.
+
+Notes:
+- The cancellation policy remains after the restored FAQ and before social.
+- No JavaScript logic was changed.
+- Workshop date, price, form fields, WhatsApp links, PayBox URL, Formspree URL, Apps Script API URL, registration limit logic, drawer behavior, and edit-mode GitHub save logic were not modified.
+
 ## 2026-06-17 FAQ repair
 
 Files changed:
